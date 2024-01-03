@@ -1,0 +1,59 @@
+# ****Parsing HTML****
+
+O processo de parsing HTML usando bash scripting envolve a extração e manipulação de dados de um documento HTML usando ferramentas e comandos disponíveis no shell do bash.
+
+Existem várias maneiras de realizar o parsing HTML usando bash scripting. Uma abordagem comum é usar o comando `curl` para fazer o download do conteúdo HTML de uma página da web e, em seguida, usar comandos como `grep`, `sed` e `awk` para extrair as informações desejadas.
+
+Por exemplo, podemos usar o comando `curl` para obter o conteúdo HTML de uma página da web e redirecionar a saída para um arquivo temporário. Em seguida, podemos usar o comando `grep` para procurar por padrões específicos no HTML e extrair os dados relevantes. O comando `sed` pode ser usado para manipular o texto extraído e o comando `awk` pode ser usado para formatar os dados de acordo com nossas necessidades.
+
+É importante ressaltar que o parsing HTML usando bash scripting pode ser uma solução limitada e frágil em comparação com bibliotecas específicas de parsing HTML em outras linguagens de programação. No entanto, em certas situações, quando outras opções não estão disponíveis, o bash scripting pode ser útil para realizar tarefas simples de parsing HTML.
+
+::: tip
+Lembre-se de sempre considerar as limitações e possíveis problemas ao realizar o parsing HTML usando bash scripting. É recomendado usar ferramentas mais robustas e específicas quando disponíveis.
+:::
+
+**Obejtivo: Criar um script para identificar possiveis hosts em um dominio. O usuario deve informar o dominio e caso o site possua subdominios na pagina ele deve retornar o ip dos hosts.**
+
+**Acessar um domino: wget e baixar o  arquivo index.html com o comando:**
+
+## **`wget www.alvo.com.br`**
+
+**Agora vamos analisar o index:**
+
+## **`cat index.html`**
+
+**Fazendo uma busca atraves do href:**
+
+## **`grep href index.html`**
+
+**Aplicar mais filtro e pegar so a coluna que tem a parte da barra como delimitador:**
+
+## **`grep href index.html | cut -d “/” -f 3`**
+
+**So mostrar a linha que tenham pontos:**
+
+## **`grep href index.html | cut -d “/” -f 3 | grep “\.”`**
+
+**Filtra o lado que so tem o dominio**
+
+## **`grep href index.html | cut -d “/” -f 3 | grep “\.” | cut -d ‘ “ ' -f 1`**
+
+**Filtrar remover o “<l”**
+
+## **`grep href index.html | cut -d “/” -f 3 | grep “\.” | cut -d ‘ “ ' -f 1 | grep -v “<l”`**
+
+**Agora vamos jogar para um arquivo**
+
+## **`grep href index.html | cut -d “/” -f 3 | grep “\.” | cut -d ‘ “ ' -f 1 | grep -v “<l” > lista`**
+
+**Lendo o arquivo lista:**
+
+## **`cat lista`**
+
+**Para saber o ip dos dominios e sub:**
+
+# **`host www.alvo.com.br`**
+
+**executar o hosta na lista e automatizar:**
+
+## `for url in $(cat lista); do host $url | grep “has address”;done`
